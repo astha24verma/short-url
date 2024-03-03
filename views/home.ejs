@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>short-url</title>
+</head>
+<body>
+    <H2>URL Shortener</H2>
+    <form action="/url" method="post">
+        Enter Original URL:
+        <input type="text" name="url" placeholder="https://www.google.com">
+        <input type="submit" value="Generate">
+    </form>
+
+    <% if (locals.id) { %>
+        <p>Short URL: <a href="http://localhost:3001/url/<%= id %>" target="_blank"> http://localhost:3001/url/<%= id %> </a></p> 
+    <% } %>
+
+    <div>
+        <br>
+        <h2>All URLs</h2>
+        <table>
+            <thead>
+                <th>S. No.</th>
+                <th>Short-URL</th>
+                <th>Redirect-URL</th>
+                <th>Clicks</th>
+                <% if (isAdmin) { %>
+                    <th>User</th>
+                    <th>Role</th>
+                <% } %>
+            </thead>
+            <tbody>
+                <% urls.forEach((url, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= url.shortId %></td>
+                        <td><%= url.redirectUrl %></td>
+                        <td><%= url.visitHistory.length %></td>
+                        <% if (isAdmin) { %>
+                            <% users.forEach((user, index) => { %>
+                                <% if(user._id.equals(url.createdBy)) {%>
+                                    <td><%= user.name.split(' ')[0] %></td>
+                                    <td><%= user.role %></td>
+                                <% } %>
+                            <% } )%>
+                        <% } %>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
