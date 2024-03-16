@@ -35,6 +35,7 @@ async function handleUserLogin(req, res) {
     // return res.json({ token });
 }
 
+
 module.exports = {
-    handleUserSignup, handleUserLogin,
+    handleUserSignup, handleUserLogin
 }

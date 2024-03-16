@@ -1,5 +1,6 @@
 const shortid = require('shortid')
 const URL = require("../models/url")
+const user = require("../models/user")
 
 async function handleGernerateShortURL(req, res) {
     const body = req.body;
@@ -19,7 +20,10 @@ async function handleGernerateShortURL(req, res) {
     });
 
     // return res.json({ id: shortID });
-    res.render('home.ejs', { id: shortID });
+    res.render('home', {
+         id: shortID, 
+         urls: await URL.find({ createdBy: req.user._id }) 
+        });
 
 }
 
@@ -42,7 +46,6 @@ async function handleDisplayShortURL(req, res) {
 }
 
 async function handleDisplayAnalyics(req, res) {
-    console.log("entry in display analytics")
     const shortId = req.params.shortId;
     const entry = await URL.findOne({ shortId });
 
@@ -50,9 +53,25 @@ async function handleDisplayAnalyics(req, res) {
         return res.status(404).json({ error: 'data not found' });
     }
 
-    return res.json({
-        totalClicks: entry.visitHistory.length,
-        analytics: entry.visitHistory
+    // return res.json({
+    //     totalClicks: entry.visitHistory.length,
+    //     analytics: entry.visitHistory
+    // }); 
+
+    const timestamp = entry.visitHistory[entry.visitHistory.length - 1].timestamp;
+
+    const date = new Date(timestamp*1000);
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var d = new Date(timestamp);
+    var dayName = days[d.getDay()];
+
+    const lastVisited = dayName + " "+ date.toLocaleTimeString();
+
+    res.render('stats', {
+        id : shortId, 
+        totalClicks: entry.visitHistory.length, 
+        lastVisitHistory: lastVisited, 
+        user: (await user.find({_id: entry.createdBy}))[0].name,
     });
 }
 

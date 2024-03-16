@@ -17,7 +17,7 @@ function checkForAuthentication(req, res, next) {
 // Authorization
 function restrictTo(roles = []){ // roles => ('Admin'), ('Normal')
     return function (req, res, next){
-        if(!req.user) return res.redirect('/login');
+        if(!req.user) return res.render('home');
 
         if(!roles.includes(req.user.role)) return res.end("Unauthorized access!")
 

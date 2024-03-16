@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%-include('./partials/head')%>
+</head>
+<body>
+    <%-include('./partials/nav')%>
+    <!-- Track your short URLs-->
+    <div class="container w-75 mt-5">
+        <h2>Track your short URLs</h2>
+    
+        <div>
+            Enter short-URL ID:
+            <input type="text" name="url" />
+            <button class="btn btn-success btn-sm" type="button" value="view" onclick="display()">View Analytics</button>
+        </div>
+        <a href="http://localhost:3001/"> Short another URL </a>
+
+        <script>
+            function display() {
+                console.log("displaying stats");
+                var url = document.getElementsByName("url")[0].value;
+                window.location.href = "http://localhost:3001/url/analytics/" + url;
+            }
+        </script>
+
+        <div class="container m-3 font-monospace">
+        <% if (locals.totalClicks) { %>
+            <h3>Analytics</h3>
+            <pre>Short ID: <%= locals.id %></pre>
+            <pre>Total Clicks: <%= locals.totalClicks %></pre>
+            <pre>Last click: <%= locals.lastVisitHistory %></pre>      
+            <pre>User: <%= locals.user %></pre> 
+        <% } %>
+        </div>
+
+        
+    </div>
+
+    
+    <%- include('./partials/footer') %>
+    <%- include('./partials/scripts') %>  
+    
+</body>
+</html>

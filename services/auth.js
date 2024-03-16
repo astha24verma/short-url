@@ -6,6 +6,7 @@ function setUser(user) {
     // sessionIdToUserMap.set(id, user);
     const payload = {
         _id: user._id,
+        fullName: user.name,
         email: user.email,
         role: user.role,
     }
