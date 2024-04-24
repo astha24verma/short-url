@@ -11,7 +11,7 @@ const { checkForAuthentication, restrictTo } = require("./middlewares/auth");
 const cookieParser = require('cookie-parser');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3000;
 
 // mongodb connection
 connectToDB( 
