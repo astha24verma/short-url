@@ -1,7 +1,25 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
+let isConnected = false;
 
-const connectToMongodb = async (url) => {
-    mongoose.connect(url);
-};
+const connectToDB = async () => {
+  mongoose.set('strictQuery', true);
+  if (isConnected) {
+    console.log('MongoDB is already connected !!');
+    return;
+  }
 
-module.exports = { connectToMongodb, };
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: "short-url",
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+    console.log('MongoDB connected !');
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = { connectToDB };
