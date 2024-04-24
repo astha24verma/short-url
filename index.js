@@ -14,7 +14,9 @@ const app = express();
 const port = 3001;
 
 // mongodb connection
-connectToDB();
+connectToDB( 
+    process.env.MONGODB_URI    
+);
 
 app.set('view engine', 'ejs');
 app.set('views', path.resolve('./views'));
