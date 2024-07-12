@@ -14,9 +14,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // mongodb connection
-connectToDB( 
-    process.env.MONGODB_URI    
-);
+connectToDB(process.env.MONGODB_URI);
+console.log("Connected to DB", process.env.MONGODB_URI);
 
 app.set('view engine', 'ejs');
 app.set('views', path.resolve('./views'));

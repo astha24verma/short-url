@@ -10,7 +10,7 @@ async function handleUserSignup(req, res) {
         email,
         password,
     });
-    return res.redirect('/');
+    return res.redirect('/login');
 
 }
 
@@ -18,10 +18,12 @@ async function handleUserLogin(req, res) {
 
     const { email, password } = req.body;
 
-    const user = await User.findOne({
-        email,
-        password,
-    });
+    const user = await User.matchPassword(email, password);
+
+    // const user = await User.findOne({
+    //     email,
+    //     password,
+    // });
     if (!user) {
         return res.render('login', { error: "Invalid email or password" });
     }
@@ -38,4 +40,4 @@ async function handleUserLogin(req, res) {
 
 module.exports = {
     handleUserSignup, handleUserLogin
-}
+};

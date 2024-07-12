@@ -1,12 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <%- include('./partials/head') %>
-        <title>Signup</title>
-</head>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
 
-<body>
+    <div
+      class="bg-gray-800 text-white flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0"
+    >
+      <div class="relative mt-12 w-full max-w-lg sm:mt-10">
+        <div
+          class="relative -mb-px h-px w-full bg-gradient-to-r from-transparent via-sky-300 to-transparent"
+          bis_skin_checked="1"
+        ></div>
+        <div
+          class="mx-5 border dark:border-b-white/50 dark:border-t-white/50 border-b-white/20 sm:border-t-white/20 shadow-[20px_0_20px_20px] shadow-slate-500/10 dark:shadow-white/20 rounded-lg border-white/20 border-l-white/20 border-r-white/20 sm:shadow-sm lg:rounded-xl lg:shadow-none"
+        >
+          <div class="flex flex-col p-6">
+            <h3 class="text-xl font-semibold leading-6 tracking-tighter">
+              Create Account
+            </h3>
+            <p class="mt-1.5 text-sm font-medium text-white/50">
+              Signup and get started.
+            </p>
+          </div>
+          <div class="p-6 pt-0">
+            <form action="/user" method="post">
+              <div class="mt-4">
+                <div>
+                  <div
+                    class="group relative rounded-lg border focus-within:border-sky-200 px-3 pb-1.5 pt-2.5 duration-200 focus-within:ring focus-within:ring-sky-300/30"
+                  >
+                    <div class="flex justify-between">
+                      <label
+                        class="text-xs font-medium text-muted-foreground group-focus-within:text-white text-gray-400"
+                        >Full Name</label
+                      >
+                    </div>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder=""
+                      autocomplete="off"
+                      class="block w-full border-0 bg-transparent p-0 text-sm file:my-1 file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:font-medium placeholder:text-muted-foreground/90 focus:outline-none focus:ring-0 sm:leading-7 text-foreground"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4">
+                <div>
+                  <div
+                    class="group relative rounded-lg border focus-within:border-sky-200 px-3 pb-1.5 pt-2.5 duration-200 focus-within:ring focus-within:ring-sky-300/30"
+                  >
+                    <div class="flex justify-between">
+                      <label
+                        class="text-xs font-medium text-muted-foreground group-focus-within:text-white text-gray-400"
+                        >Email</label
+                      >
+                    </div>
+                    <input
+                      type="text"
+                      name="email"
+                      placeholder="example@gmail.com"
+                      autocomplete="off"
+                      class="block w-full border-0 bg-transparent p-0 text-sm file:my-1 file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:font-medium placeholder:text-muted-foreground/90 focus:outline-none focus:ring-0 sm:leading-7 text-foreground"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4">
+                <div>
+                  <div
+                    class="group relative rounded-lg border focus-within:border-sky-200 px-3 pb-1.5 pt-2.5 duration-200 focus-within:ring focus-within:ring-sky-300/30 mb-8"
+                  >
+                    <div class="flex justify-between">
+                      <label
+                        class="text-xs font-medium text-muted-foreground group-focus-within:text-white text-gray-400"
+                        >Password</label
+                      >
+                    </div>
+                    <div class="flex items-center">
+                      <input
+                        type="password"
+                        name="password"
+                        placeholder="Choose a strong password"
+                        class="block w-full border-0 bg-transparent p-0 text-sm file:my-1 placeholder:text-muted-foreground/90 focus:outline-none focus:ring-0 focus:ring-teal-500 sm:leading-7 text-foreground"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4 flex items-center justify-end gap-x-2">
+                <button
+                  class="w-full font-semibold hover:bg-black hover:text-white hover:ring hover:ring-white transition duration-300 inline-flex items-center justify-center rounded-md text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-black h-12 px-4 py-2"
+                  type="submit"
+                >
+                  Create Account
+                </button>
+              </div>
+              <div class="mt-4 flex items-center justify-center gap-x-2">
+                <span>
+                  Already have an account?
+                  <a class="text-blue-400 underline" href="/login"> Login </a>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <body>
     <div class="container w-50 mt-5">
         <h4>Create a new account</h4>
         <form action="/user" method="post">
@@ -27,7 +133,7 @@
             <div class="d-flex flex-row align-items-center mb-4">
                 <div class="form-outline flex-fill mb-0">
                     <label class="form-label" for="form3Example4c">Password</label>
-                    <input type="text" name="password" id="form3Example4c" class="form-control" />
+                    <input type="password" name="password" id="form3Example4c" class="form-control" />
                 </div>
             </div>
             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
@@ -37,6 +143,8 @@
             </div>
         </form>
     </div>
-</body>
+</body> -->
 
+    <%- include('./partials/footer') %> <%- include('./partials/scripts') %>
+  </body>
 </html>

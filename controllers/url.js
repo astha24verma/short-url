@@ -1,15 +1,15 @@
-const shortid = require('shortid')
-const URL = require("../models/url")
-const user = require("../models/user")
+const shortid = require('shortid');
+const URL = require("../models/url");
+const user = require("../models/user");
 
 async function handleGernerateShortURL(req, res) {
     const body = req.body;
     console.log(body);
     if (body === undefined) {
-        return res.status(404).json({ error: 'body is required' })
+        return res.status(404).json({ error: 'body is required' });
     }
     if (!body.url) {
-        return res.status(404).json({ error: 'url is required' })
+        return res.status(404).json({ error: 'url is required' });
     }
     const shortID = shortid();
     await URL.create({
@@ -17,14 +17,20 @@ async function handleGernerateShortURL(req, res) {
         redirectUrl: body.url,
         visitHistory: [],
         createdBy: req.user._id, // req.user is coming from auth middleware
+
     });
 
     // return res.json({ id: shortID });
     res.render('home', {
-         id: shortID, 
-         urls: await URL.find({ createdBy: req.user._id }) 
-        });
+        id: shortID,
+        redirectUrl: body.url,
+        user: req.user,
+        urls: await URL.find({ createdBy: req.user._id }),
+        currentURL: req.protocol + '://' + req.get('host'),
+    });
 
+
+    // console.log(req.protocol + '://' + req.get('host'));
 }
 
 async function handleDisplayShortURL(req, res) {
@@ -58,24 +64,42 @@ async function handleDisplayAnalyics(req, res) {
     //     analytics: entry.visitHistory
     // }); 
 
-    const timestamp = entry.visitHistory[entry.visitHistory.length - 1].timestamp;
+    if (entry.visitHistory.length == 0) {
+        res.render('stats', {
+            id: shortId,
+            user: req.user,
+            totalClicks: 0,
+            lastVisitHistory: "No visits yet",
+            // user: (await user.find({ _id: entry.createdBy }))[0].name,
+        });
+    } else {
 
-    const date = new Date(timestamp*1000);
-    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var d = new Date(timestamp);
-    var dayName = days[d.getDay()];
+        const timestamp = entry.visitHistory[entry.visitHistory.length - 1].timestamp;
 
-    const lastVisited = dayName + " "+ date.toLocaleTimeString();
+        const date = new Date(timestamp * 1000);
+        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var d = new Date(timestamp);
+        var dayName = days[d.getDay()];
 
-    res.render('stats', {
-        id : shortId, 
-        totalClicks: entry.visitHistory.length, 
-        lastVisitHistory: lastVisited, 
-        user: (await user.find({_id: entry.createdBy}))[0].name,
-    });
+        const lastVisited = dayName + " " + date.toLocaleTimeString();
+
+        res.render('stats', {
+            id: shortId,
+            totalClicks: entry.visitHistory.length,
+            lastVisitHistory: lastVisited,
+        });
+
+
+    }
+}
+
+async function handleDeleteShortURL(req, res) {
+    const shortID = req.params.shortId;
+    await URL.deleteOne({ shortId: shortID });
+    return res.json({ redirect: '/' });
 }
 
 
 module.exports = {
-    handleGernerateShortURL, handleDisplayShortURL, handleDisplayAnalyics,
-}
+    handleGernerateShortURL, handleDisplayShortURL, handleDisplayAnalyics, handleDeleteShortURL,
+};

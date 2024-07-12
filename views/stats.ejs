@@ -1,45 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%-include('./partials/head')%>
-</head>
-<body>
-    <%-include('./partials/nav')%>
+  <head>
+    <%- include('./partials/head') %>
+  </head>
+  <body>
     <!-- Track your short URLs-->
-    <div class="container w-75 mt-5">
-        <h2>Track your short URLs</h2>
-    
-        <div>
-            Enter short-URL ID:
-            <input type="text" name="url" />
-            <button class="btn btn-success btn-sm" type="button" value="view" onclick="display()">View Analytics</button>
+    <div
+      class="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-5 mt-8"
+    >
+      <div class="text-white font-extrabold text-5xl mt-5">
+        Track your short URLs
+      </div>
+      <div class="w-auto max-w-12 mt-5 mb-10">
+        <span class="text-gray-300 text-lg">
+          Enter the URL to check the number of clicks it has received so far.
+        </span>
+      </div>
+
+      <div class="w-full max-w-2xl bg-gray-200 rounded-lg p-5">
+        <div class="flex">
+          <input
+            type="text"
+            name="url"
+            id="url"
+            class="w-full bg-white pl-2 text-base font-semibold outline-none"
+            placeholder="Enter Your Short Link Here"
+          />
+          <button
+            type="submit"
+            value="View Analytics"
+            onclick="display()"
+            class="bg-pink-700 p-2 w-80 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-pink-500 transition-colors"
+          >
+            View Analytics
+          </button>
         </div>
-        <a href="http://localhost:3001/"> Short another URL </a>
+      </div>
 
-        <script>
-            function display() {
-                console.log("displaying stats");
-                var url = document.getElementsByName("url")[0].value;
-                window.location.href = "http://localhost:3001/url/analytics/" + url;
-            }
-        </script>
+      <a
+        href="/"
+        class="text-pink-600 font-semibold text-lg mt-5 hover:text-pink-400 transition-colors"
+      >
+        Short another URL
+      </a>
 
-        <div class="container m-3 font-monospace">
-        <% if (locals.totalClicks) { %>
-            <h3>Analytics</h3>
-            <pre>Short ID: <%= locals.id %></pre>
-            <pre>Total Clicks: <%= locals.totalClicks %></pre>
-            <pre>Last click: <%= locals.lastVisitHistory %></pre>      
-            <pre>User: <%= locals.user %></pre> 
+      <script>
+        function display() {
+          console.log("displaying stats");
+          var url = document.getElementsByName("url")[0].value;
+          console.log(url);
+          window.location.href = "http://localhost:3000/url/analytics/" + url;
+        }
+      </script>
+
+      <div class="text-white text-2xl mt-12">
+        <% if (locals.id) { %>
+        <pre>Short ID: <%= locals.id %></pre>
+        <pre>Total Clicks: <%= locals.totalClicks %></pre>
+        <pre>Last click: <%= locals.lastVisitHistory %></pre>
         <% } %>
-        </div>
-
-        
+      </div>
     </div>
 
-    
-    <%- include('./partials/footer') %>
-    <%- include('./partials/scripts') %>  
-    
-</body>
+    <%- include('./partials/footer') %> <%- include('./partials/scripts') %>
+  </body>
 </html>

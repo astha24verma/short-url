@@ -1,86 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<%- include('./partials/head') %>
-</head>
-<body>
-
+  <head>
+    <%- include('./partials/head') %>
+  </head>
+  <body>
     <%- include('./partials/nav') %>
-    <div class="container container w-75 mt-5">
-    <h2>URL Shortener</h2>
 
-    <form action="/url" method="post">
-        Enter Original URL:
-        <input type="text" name="url" placeholder="https://www.google.com" />
-        <% if (locals.user) { %>
-            <button class="btn btn-success btn-sm" type="submit" value="Generate"> Generate</button>
-        <% } %>
-        <% if (!locals.user) { %>
-            <a href="/login"><input type="button" value="Generate" onclick="alert('Login First')"/></a>
-        <% } %>
-    </form>
+    <div
+      class="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-5"
+    >
+      <div class="text-white font-extrabold text-4xl mb-6 mt-20">
+        URL Shortener
+      </div>
 
-    <% if (locals.id) { %>  // id: shortId
-        <p>
-            Short URL:
-            <a href="http://localhost:3001/url/<%= id %>" target="_blank">
-                http://localhost:3001/url/<%= id %>
+      <form
+        action="/url"
+        method="post"
+        class="w-full flex flex-col items-center justify-center"
+      >
+        <div class="w-full max-w-2xl bg-gray-200 rounded-lg p-5">
+          <div class="flex">
+            <input
+              type="text"
+              name="url"
+              id="url"
+              class="w-full bg-white pl-2 text-base font-semibold outline-none"
+              placeholder="Enter Link Here"
+            />
+            <% if (locals.user) { %>
+            <input
+              type="submit"
+              value="Generate"
+              class="bg-pink-700 p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-pink-500 transition-colors"
+            />
+            <% } %> <% if (!locals.user) { %>
+            <a href="/login">
+              <input
+                type="button"
+                value="Generate"
+                onclick="alert('Login First')"
+                class="bg-pink-700 p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-pink-500 transition-colors"
+              />
             </a>
-        </p>
-        <% } %>
-        <% if (locals.id || locals.user) { %>
-            <div>
-                <br />
-                <h2>All URLs</h2>
-                <table>
-                    <thead>
-                        <th>S. No.</th>
-                        <th>Short-URL</th>
-                        <th>Redirect-URL</th>
-                        <th>Clicks</th>
-                        <% if (locals.isAdmin) { %>
-                            <th>User</th>
-                            <th>Role</th>
-                            <% } %>
-                    </thead>
-                    <tbody>
-                        <% if(locals.urls) {%>
-                            <% urls.forEach((url, index)=> { %>
-                                <tr>
-                                    <td>
-                                        <%= index + 1 %>
-                                    </td>
-                                    <td>
-                                        <%= url.shortId %>
-                                    </td>
-                                    <td>
-                                        <%= url.redirectUrl %>
-                                    </td>
-                                    <td>
-                                        <%= url.visitHistory.length %>
-                                    </td>
-                                    <% if (locals.isAdmin) { %>
-                                        <% if(locals.users) {%>
-                                            <% locals.users.forEach((user, index)=> { %> <%
-                                                if(user._id.equals(url.createdBy)) {%>
-                                                    <td>
-                                                        <%= user.name.split(' ')[0] %></td>
-                                                    <td><%= user.role %></td>
-                                                <% } %>
-                                            <% } )%>
-                                        <% } %>
-                                    <% } %>
-                                </tr>
-                            <% }) %> 
-                        <% } %>
-                    </tbody>
-                </table>
+            <% } %>
+          </div>
+        </div>
+      </form>
+
+      <!-- Short id -->
+      <% if ( locals.id && locals.currentURL && locals.redirectUrl) { %>
+
+      <!-- id: shortId -->
+      <div class="w-full max-w-2xl bg-gray-200 rounded-lg p-5 mt-4">
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-md text-gray-700 truncate flex-grow mr-4"
+            ><%= redirectUrl %>
+          </span>
+          <span class="text-gray-500 whitespace-nowrap">
+            (
+            <a
+              class="text-blue-400 font-bold"
+              href="<%= currentURL %>/url/<%= id %>"
+              target="_blank"
+            >
+              <%= id %>
+            </a>
+            )
+          </span>
+        </div>
+      </div>
+
+      <script>
+        // Change URL to home immediately after displaying the short URL
+        history.pushState({}, "", "/");
+      </script>
+
+      <!-- short id end  -->
+
+      <% } %> <% if (locals.id || locals.user) { %>
+
+      <!-- table -->
+      <div class="flex flex-col w-full max-w-12 mt-24 mb-20">
+        <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
+          <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="overflow-hidden rounded-lg">
+              <table class="min-w-full rounded-lg">
+                <thead class="bg-gray-200 border-b">
+                  <tr>
+                    <th
+                      scope="col"
+                      class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    >
+                      #
+                    </th>
+                    <th
+                      scope="col"
+                      class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    >
+                      Short-URL
+                    </th>
+                    <th
+                      scope="col"
+                      class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    >
+                      Redirect-URL
+                    </th>
+                    <th
+                      scope="col"
+                      class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    >
+                      Clicks
+                    </th>
+                    <th
+                      scope="col"
+                      class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    ></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if(locals.urls) {%> <% urls.forEach((url, index)=> { %>
+                  <tr
+                    class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+                  >
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      <%= index + 1 %>
+                    </td>
+                    <td
+                      class="text-base text-gray-900 font-semibold px-6 py-4 whitespace-nowrap"
+                    >
+                      <a
+                        href="/url/<%= url.shortId  %>"
+                        target="_blank"
+                        class="text-blue-400"
+                      >
+                        <%= url.shortId %>
+                      </a>
+                    </td>
+                    <td
+                      class="text-base text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                    >
+                      <%= url.redirectUrl %>
+                    </td>
+                    <td
+                      class="text-base text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                    >
+                      <%= url.visitHistory.length %>
+                    </td>
+                    <td
+                      class="text-base text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                    >
+                      <a
+                        class="deleteButtonLink text-red-500 cursor-pointer"
+                        data-short-id="<%= url.shortId %>"
+                      >
+                        Delete
+                      </a>
+                    </td>
+                  </tr>
+
+                  <% }) %> <% } %>
+                </tbody>
+              </table>
             </div>
-        <% } %>
+          </div>
+        </div>
+      </div>
+
+      <!-- table end-->
+
+      <% } %>
+
+      <div class="w-full max-w-12 mt-20 mb-10">
+        <p class="text-3xl text-white font-semibold mb-6">
+          A fast and simple URL shortener
+        </p>
+        <span class="text-gray-300 text-lg">
+          Transform lengthy, cumbersome links into short, memorable, and
+          trackable URLs with our URL shortener. Ideal for social media, blogs,
+          SMS, emails, ads, and more. Use it on platforms like Twitter,
+          Facebook, YouTube, Instagram, WhatsApp, and in videos. Our service
+          offers a superior free alternative to common shorteners like Bitly and
+          TinyURL. After shortening your URL, you can easily track
+          <a href="#" class="text-pink-600">how many clicks it receives</a
+          >.</span
+        >
+      </div>
     </div>
 
-        <%- include('./partials/footer') %>
-    <%- include('./partials/scripts') %>        
-</body>
+    <!-- .. -->
 
+    <%- include('./partials/footer') %>
+
+    <script>
+      function changeURLToHome() {
+        if (window.location.pathname !== "/") {
+          history.replaceState(null, "", "/");
+        }
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        const deleteButtons = document.querySelectorAll("a.deleteButtonLink");
+        console.log(deleteButtons);
+
+        deleteButtons.forEach((button) => {
+          button.addEventListener("click", async (e) => {
+            e.preventDefault();
+            console.log("Delete button clicked");
+            const shortId = button.dataset.shortId;
+
+            if (confirm("Are you sure you want to delete this URL?")) {
+              try {
+                const response = await fetch(`/url/${shortId}`, {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                });
+
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+
+                const data = await response.json();
+                console.log(data);
+
+                if (data.redirect) {
+                  console.log("Redirecting to:", data.redirect);
+                  window.location.href = data.redirect;
+                } else {
+                  console.log("server response:", data);
+                  // error
+                  console.log("Server did not provide redirect URL");
+                }
+              } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while deleting the URL");
+              }
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
