@@ -51,7 +51,7 @@
       <% if ( locals.id && locals.currentURL && locals.redirectUrl) { %>
 
       <!-- id: shortId -->
-      <div class="w-full max-w-2xl bg-gray-200 rounded-lg p-5 mt-4">
+      <div class="w-full max-w-2xl bg-gray-200 rounded-lg mt-5 p-5">
         <div class="flex justify-between items-center">
           <span class="font-bold text-md text-gray-700 truncate flex-grow mr-4"
             ><%= redirectUrl %>
@@ -139,7 +139,7 @@
                       </a>
                     </td>
                     <td
-                      class="text-base text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                      class="text-base text-gray-900 font-light px-6 py-4 truncate max-w-xl overflow-hidden whitespace-nowrap"
                     >
                       <%= url.redirectUrl %>
                     </td>
