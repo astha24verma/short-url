@@ -25,7 +25,7 @@ async function handleGernerateShortURL(req, res) {
         id: shortID,
         redirectUrl: body.url,
         user: req.user,
-        urls: await URL.find({ createdBy: req.user._id }),
+        urls: await URL.find({ createdBy: req.user._id }).sort({ createdAt: -1 }),
         currentURL: req.protocol + '://' + req.get('host'),
     });
 

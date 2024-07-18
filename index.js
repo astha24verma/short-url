@@ -20,6 +20,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.resolve('./views'));
 
 // middleware
+app.use(express.static(path.resolve('./public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
