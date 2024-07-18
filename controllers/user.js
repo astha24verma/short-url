@@ -16,6 +16,8 @@ async function handleUserSignup(req, res) {
 
 async function handleUserLogin(req, res) {
 
+    console.log('Login request received:', req.body);
+
     const { email, password } = req.body;
 
     const user = await User.matchPassword(email, password);
@@ -33,6 +35,7 @@ async function handleUserLogin(req, res) {
     const token = setUser(user);
     // console.log(token);
     res.cookie('token', token);
+    console.log('User authenticated, token set in cookie');
     return res.redirect('/');
     // return res.json({ token });
 }

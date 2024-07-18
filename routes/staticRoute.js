@@ -24,13 +24,13 @@ router.get('/login', (req, res) => {
     return res.render('login');
 });
 
-router.get('/stats', async (req, res) => {
+router.get('/stats', checkForAuthentication, async (req, res) => {
     return res.render('stats', { user: req.user });
 });
 
-router.get('/url/analytics/:shortId', async (req, res) => {
-    return res.render('stats', { user: req.user });
-});
+// router.get('/url/analytics/:shortId', async (req, res) => {
+//     return res.render('stats', { user: req.user });
+// });
 
 router.get('/logout', (req, res) => {
     res.clearCookie('token');

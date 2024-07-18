@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  mongo_db:
+    container_name: mongo_db_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_db:/data/db
+
+  #node api service
+  node_api:
+    container_name: node_api_container
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      MONGODB_URI: mongodb://mongo_db:27017/
+      SECRET: astha$#24@dev
+    depends_on:
+      - mongo_db
+
+# networks:
+#   url-shortener-app:
+#     driver: bridge
+
+volumes:
+  mongo_db: {}

@@ -52,6 +52,7 @@ async function handleDisplayShortURL(req, res) {
 }
 
 async function handleDisplayAnalyics(req, res) {
+    console.log("inside display analytics", req.params);
     const shortId = req.params.shortId;
     const entry = await URL.findOne({ shortId });
 
@@ -77,6 +78,7 @@ async function handleDisplayAnalyics(req, res) {
         const timestamp = entry.visitHistory[entry.visitHistory.length - 1].timestamp;
 
         const date = new Date(timestamp * 1000);
+
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         var d = new Date(timestamp);
         var dayName = days[d.getDay()];
@@ -85,6 +87,7 @@ async function handleDisplayAnalyics(req, res) {
 
         res.render('stats', {
             id: shortId,
+            user: req.user,
             totalClicks: entry.visitHistory.length,
             lastVisitHistory: lastVisited,
         });

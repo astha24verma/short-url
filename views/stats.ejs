@@ -26,14 +26,27 @@
             class="w-full bg-white pl-2 text-base font-semibold outline-none"
             placeholder="Enter Your Short Link Here"
           />
+          <% if (locals.user) { %>
           <button
             type="submit"
             value="View Analytics"
             onclick="display()"
-            class="bg-pink-700 p-2 w-80 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-pink-500 transition-colors"
+            class="bg-pink-700 p-2 w-40 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-pink-500 transition-colors"
           >
             View Analytics
           </button>
+          <% } %> <% if (!locals.user) { %>
+          <a href="/login">
+            <button
+              type="button"
+              value="View Analytics"
+              onclick="alert('Login First')"
+              class="bg-pink-700 p-2 w-40 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-pink-500 transition-colors"
+            >
+              View Analytics
+            </button>
+          </a>
+          <% } %>
         </div>
       </div>
 
@@ -53,11 +66,11 @@
         }
       </script>
 
-      <div class="text-white text-2xl mt-12">
+      <div class="text-white text-xl mt-12">
         <% if (locals.id) { %>
-        <pre>Short ID: <%= locals.id %></pre>
-        <pre>Total Clicks: <%= locals.totalClicks %></pre>
-        <pre>Last click: <%= locals.lastVisitHistory %></pre>
+        <pre>Short ID: <span class="text-pink-300"> <%= locals.id %> </span></pre>
+        <pre>Total Clicks:<span class="text-pink-300"> <%= locals.totalClicks %></span></pre>
+        <pre>Last click: <span class="text-pink-300"><%= locals.lastVisitHistory %></span></pre>
         <% } %>
       </div>
     </div>
