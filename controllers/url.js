@@ -4,7 +4,6 @@ const user = require("../models/user");
 
 async function handleGernerateShortURL(req, res) {
     const body = req.body;
-    console.log(body);
     if (body === undefined) {
         return res.status(404).json({ error: 'body is required' });
     }
@@ -48,11 +47,14 @@ async function handleDisplayShortURL(req, res) {
         }
     );
 
+    if (!entry) {
+        return res.status(404).json({ error: 'data not found' });
+    }
+
     res.redirect(entry.redirectUrl);
 }
 
 async function handleDisplayAnalyics(req, res) {
-    console.log("inside display analytics", req.params);
     const shortId = req.params.shortId;
     const entry = await URL.findOne({ shortId });
 

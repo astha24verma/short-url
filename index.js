@@ -26,7 +26,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // route
-// app.use('/:shortId', handleDisplayShortURL);
 app.use(checkForAuthentication);
 app.use("/url", restrictTo(['Normal', 'Admin']), urlRoute);
 app.use("/", staticRoute);
